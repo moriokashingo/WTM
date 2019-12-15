@@ -11,6 +11,18 @@
 // |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+
+Route::resource('users', 'UserController');
+
+Route::resource('questions', 'QuestionController',['except'=>['index','show']])
+->middleware('auth');
+Route::get('questions/{question}', 'QuestionController@show')->name('questions.show');
+Route::get('/', 'QuestionController@index')->name('questions.index');
+
+Route::resource('comments', 'CommentController');
+Route::resource('tags', 'TagController');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
