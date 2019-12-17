@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Tag;
 
 class TagController extends Controller
 {
@@ -46,6 +47,9 @@ class TagController extends Controller
     public function show($id)
     {
         //
+        $tag = Tag::find($id);
+        $questions=$tag->question;
+        return view('tag.show',['questions'=>  $questions,'tag'=>$tag]);
     }
 
     /**
