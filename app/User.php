@@ -39,4 +39,10 @@ class User extends Authenticatable
     public function questions(){
         return $this->hasMany(\App\Question::class,'user_id','id');
     }
+    public function comments(){
+        return $this->hasMany(\App\Comment::class,'user_id','id');
+    }
+    public static $editRules = array(
+        'password' => 'confirmed'
+    );
 }
