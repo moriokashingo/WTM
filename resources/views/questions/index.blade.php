@@ -2,7 +2,7 @@
 @section('title',"WTM~ What's The Music?~")
 
 @section('content')
-  <h1>ここから</h1>
+  <h1>Question's</h1>
     @foreach($questions as $question)
     <div class="card">
       <div class="card-body">
@@ -13,7 +13,7 @@
         </h5>
         <h5 class="card-title">
           投稿者:
-          <a href="#">
+          <a href="{{route('users.show',[$question->user_id])}}">
             {{$question->user->name}}
           </a>
         </h5>
@@ -28,12 +28,18 @@
             </div>
           @endif
         </div>
+        @if(!$question->tags=='')
+          @foreach($question->tags as $tag)
+            <a href="{{route('tags.show',[$tag->id])}}" class ="btn btn-outline-secondary" >
+              {{$tag->name}}
+            </a>
+          @endforeach
+        @endif
         @if(Auth::id() == $question->user_id)
           <a href="{{route('questions.edit',$question->id)}}" class ="btn btn-primary" >
           編集する
           </a>
         @endif
-
       </div>
     </div>
     @endforeach
