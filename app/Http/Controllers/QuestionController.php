@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Question;
+use App\Comment;
 use Auth;
 
 class QuestionController extends Controller
@@ -57,7 +58,8 @@ class QuestionController extends Controller
     {
         //
         $question = Question::findOrFail($id);
-        return view('questions.show')->with('question',$question);
+        $comments = Comment::latest()->paginate(5);
+        return view('questions.show')->with(['question'=>$question ,'comments'=>$comments]);
     }
 
     /**
