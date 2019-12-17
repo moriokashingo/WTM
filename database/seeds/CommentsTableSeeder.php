@@ -13,16 +13,23 @@ class CommentsTableSeeder extends Seeder
     {
         //
         DB::table('comments')->insert([
-            ['body' => 'book',
+            ['body' => 'これはあの曲ですよ',
             'question_id'=>'1',
-            'user_id'=>'1'
+            'user_id'=>'1',
+            'created_at'=>'2019-12-14 14:23:24',
+            'updated_at'=>'2019-12-14 14:23:24'
             ],
-            ['body' => 'cafe',
+            ['body' => 'それはあの曲ですよ',
             'question_id'=>'1',
-            'user_id'=>'1'],
-            ['body' => 'travel',
+            'user_id'=>'1',
+            'created_at'=>'2019-12-14 14:23:24',
+            'updated_at'=>'2019-12-14 14:23:24'
+        ],
+            ['body' => 'あれはあの曲ですよ',
             'question_id'=>'1',
-            'user_id'=>'1']
+            'user_id'=>'1',
+            'created_at'=>'2019-12-14 14:23:24',
+            'updated_at'=>'2019-12-14 14:23:24']
         ]);
     }
 }
