@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class QuestionTagsTableSeeder extends Seeder
+class QuestiontagsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,6 +25,6 @@ class QuestionTagsTableSeeder extends Seeder
             ['question_id' => '3',
             'tag_id' => '3',
             ],
-        ]);
+            ]);
     }
 }

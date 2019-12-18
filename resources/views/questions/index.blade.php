@@ -3,6 +3,7 @@
 
 @section('content')
   <h1>Question's</h1>
+  
     @foreach($questions as $question)
     <div class="card">
       <div class="card-body">
@@ -35,6 +36,7 @@
             </a>
           @endforeach
         @endif
+
         @if(Auth::id() == $question->user_id)
           <a href="{{route('questions.edit',$question->id)}}" class ="btn btn-primary" >
           編集する

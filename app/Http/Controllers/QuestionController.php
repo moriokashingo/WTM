@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 use App\Question;
 use App\Comment;
-use Auth;
+use App\Tag;
 
 class QuestionController extends Controller
 {
@@ -40,11 +41,27 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $question = new Question;
-        $form = $request->all();
-        unset($form['_token']);
-        $question->fill($form)->save();
+        $question = $request->validate([
+            'description' => 'required',
+            'user_id'     =>  'required|numeric',
+        ]);
+        $question = new question;
+        $question->description = $request->description;
+        $question->resolution = $request->resolution;
+        $question->user_id = Auth::user()->id;
+        preg_match_all('/#([a-zA-z0-9０-９ぁ-んァ-ヶ亜-熙]+)/u', $request->tags, $match);
+        $tags = [];
+        foreach ($match[1] as $tag) {
+            $record = Tag::firstOrCreate(['name' => $tag]);
+            array_push($tags,$record);
+        };
+        $tags_id = [];
+        foreach ($tags as $tag) {
+            array_push($tags_id, $tag['id']);
+        };
+
+        $question->save();
+        $question->tags()->attach($tags_id);
         return redirect('/');
     }
 
