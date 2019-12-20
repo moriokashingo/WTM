@@ -15,9 +15,19 @@
         </ul>
     </div>
 @endif  
-<form action="{{ url('users/'. $auth->id)}}" method="post">
+<div>
+  @if(!empty($auth->thumbnail))
+    <img src="/storage/user/{{ $auth->thumbnail }}" class="thumbnail">
+  @else
+    画像なし
+  @endif
+</div>
+<form action="{{ url('users/'. $auth->id)}}" method="post" enctype="multipart/form-data" id="form">
   {{csrf_field()}}
   {{ method_field('patch') }}
+  <input type="hidden" name='user_id' value={{ $auth->id }}>
+  <label for="thumbnail">Thumbnail</label>
+  <input type="file" name="thumbnail" value=""/>>
   <label for="name">name</label>
   <input type='text' name='name' value="{{old('name', $auth->name)}}">
   <label for="email">email</label>
@@ -27,6 +37,7 @@
   <label for="password_confirmation">password_confirmation</label>
   <input type='text' name='password_confirmation' >
   <input type="submit" value="Update">
+  <a href="{{ route('users.index') }}" class="btn btn-primary btn-sm">戻る</a>
   </p>
 </form>
 @endsection

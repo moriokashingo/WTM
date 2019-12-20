@@ -7,6 +7,13 @@
 </h1>
 <div class="card">
   <div class="card-body">
+    <div>
+        @if(!empty($auth->thumbnail))
+          <img src="/storage/user/{{ $auth->thumbnail }}" class="thumbnail">
+        @else
+          画像なし
+        @endif
+      </div>
     <p class="card-title">name:{{$auth->name}}</p>
     <p class="card-title">email:{{$auth->email}}</p>
   </div>

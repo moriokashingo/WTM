@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','thumbnail'
     ];
 
     /**
@@ -43,6 +43,9 @@ class User extends Authenticatable
         return $this->hasMany(\App\Comment::class,'user_id','id');
     }
     public static $editRules = array(
-        'password' => 'confirmed'
+        'password' => 'confirmed',
+        'user_id'  => 'integer|required',
+        'name'     => 'required',
+        'thumbnail'=>'file|image|mimes:jpeg,png,jpg,gif|max:2048',
     );
 }

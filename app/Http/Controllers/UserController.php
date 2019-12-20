@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Http\Request;
 use App\User;
 use App\Question;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
+
 {
     //
     public function index(){
@@ -23,20 +27,30 @@ class UserController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $this->validate($request, User::$editRules);
-        $auth =Auth::user();
-        $form = $request->all();
-        unset($form['_token']);
-        foreach ($form as $key => $value) {
-            // nullの場合更新対象から除外する
-            if($value == null) {
-            unset($form[$key]);
-            }
+        $validator = Validator::make($request->all(),User::$editRules);
+        $uploadfile = $request->file('thumbnail');
+        if(!empty($uploadfile)){
+
+            $thumbnailname = $request->file('thumbnail')->hashName();
+            $request['password'] = Hash::make($request['password']);
+            $request->file('thumbnail')->storeAs('public/user', $thumbnailname);
+            $param = [
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'password'=>$request->password,
+                'thumbnail'=>$thumbnailname,
+            ];
+        }else{
+            $request['password'] = Hash::make($request['password']);
+            $param = [
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'password'=>$request->password,
+            ];
         }
-        // パスワードを暗号化する
-        $form['password'] = Hash::make($form['password']);
-        $auth->fill($form)->save();
-        return view('user.index',["auth"=>$auth]);
+        $user = User::find($request->user_id)->update($param);
+        return redirect()->route('users.index');
+
     }
     public function show($id)
     {
