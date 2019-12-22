@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 use Auth;
 use App\Question;
 use App\Comment;
 use App\Tag;
 
+
 class QuestionController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -18,8 +20,50 @@ class QuestionController extends Controller
     public function index()
     {
         //
+        $q = \Request::query();
+
+        if(isset($q["tag_search_query"])){
+            $search_query=$q["tag_search_query"];
+            $tags = Tag::with('questions')->where('name','like',"%$search_query%")->get();
+            $a_questions=[];
+            foreach ($tags as $tag){
+                foreach ($tag->questions as $question){
+                    array_push($a_questions,$question);
+                }
+            }
+            $questions = new Paginator($a_questions,5,$q['page']);
+            $seacrh_result= $search_query."の検索結果".count($questions)."件";
+            return view('questions.index',[
+                'seacrh_result'=>$seacrh_result,
+                'questions'  =>$questions,
+                'search_query'=>$q["tag_search_query"]
+                ]);
+        } elseif(isset($q["search_query"])){
+            $questions = Question::where('description','like',"%$request->search%")
+            ->paginate(2);
+            $seacrh_result= $request->search."の検索結果".count($questions)."件";
+            return view('questions.index',[
+                'seacrh_result'=>$seacrh_result,
+                'questions'  =>$questions,
+                'search_query'=>$request->search
+                ]);
+        }else{
         $questions =Question::latest()->paginate(2);
         return view('questions.index',['questions'=>  $questions]);
+        }
+    }
+    public function search(Request $request)
+    {
+        //
+
+        $questions = Question::where('description','like',"%$request->search%")
+                ->paginate(2);
+        $seacrh_result= $request->search."の検索結果".count($questions)."件";
+        return view('questions.index',[
+            'seacrh_result'=>$seacrh_result,
+            'questions'  =>$questions,
+            'search_query'=>$request->search
+            ]);
     }
 
     /**

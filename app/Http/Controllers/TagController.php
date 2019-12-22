@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
+use Auth;
+use App\Question;
+use App\Comment;
 use App\Tag;
 
 class TagController extends Controller
@@ -15,6 +19,30 @@ class TagController extends Controller
     public function index()
     {
         //
+        {
+            //
+ 
+        }
+    }
+    public function search(Request $request)
+    {
+        //
+
+        $tags = Tag::with('questions')->where('name','like',"%$request->search%")->paginate(2);
+        $a_questions=[];
+        foreach ($tags as $tag){
+            foreach ($tag->questions as $question){
+                array_push($a_questions,$question);
+            }
+        }
+
+        $questions = new Paginator($a_questions, 2 );
+        $seacrh_result= $request->search."の検索結果".count($a_questions)."件";
+        return view('questions.index',[
+            'seacrh_result'=>$seacrh_result,
+            'questions'  =>$questions,
+            'tag_search_query'=>$request->search
+            ]);
     }
 
     /**
@@ -48,7 +76,8 @@ class TagController extends Controller
     {
         //
         $tag = Tag::find($id);
-        $questions=$tag->question;
+        $questions = $tag->questions;
+        // dd($tag->questions);
         return view('tag.show',['questions'=>  $questions,'tag'=>$tag]);
     }
 

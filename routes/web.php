@@ -15,14 +15,20 @@
 
 
 Route::resource('users', 'UserController');
+Route::get('/tags/search', 'TagController@search')->name('tags.search');
+Route::get('/questions/search', 'QuestionController@search')->name('questions.search');
 
 Route::resource('questions', 'QuestionController',['except'=>['index','show']])
 ->middleware('auth');
+
 Route::get('questions/{question}', 'QuestionController@show')->name('questions.show');
 Route::get('/', 'QuestionController@index')->name('questions.index');
+
 Route::resource('users', 'UserController');
 Route::resource('questions.comments', 'CommentController');
 Route::resource('tags', 'TagController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+

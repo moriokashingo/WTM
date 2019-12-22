@@ -2,8 +2,21 @@
 @section('title',"WTM~ What's The Music?~")
 
 @section('content')
-  <h1>Question's</h1>
-  
+  @if(isset($search_query )|| isset($tag_search_query ))
+    <h5 class='card-title'>{{$seacrh_result}}</h5>
+  @endif
+  <form action="{{route('questions.search')}}" method='get' class="form-inline md-form mr-auto mb-4">
+      {{csrf_field()}}
+      <h5 class="card-title">文章検索フォーム</h5>
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+      <button class="btn btn-outline-secondary btn-sm my-0" type="submit">Search</button>
+  </form>
+  <form action="{{route('tags.search')}}" method='get' class="form-inline md-form mr-auto mb-4">
+      {{csrf_field()}}
+      <h5 class="card-title">タグ検索フォーム</h5>
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+      <button class="btn btn-outline-secondary btn-sm my-0" type="submit">Search</button>
+  </form>
     @foreach($questions as $question)
     <div class="card">
       <div class="card-body">
@@ -45,10 +58,10 @@
       </div>
     </div>
     @endforeach
-    @if(isset($tag_id))
-        {{$posts->appends(['category_id'=> $category_id])->links()}}
+    @if(isset($tag_search_query))
+        {{$questions->appends(['tag_search_query'=> $tag_search_query])->links()}}
     @elseif(isset($search_query))
-        {{$posts->appends(['search_query'=> $search_query])->links()}}
+        {{ $questions->appends(['search_query'=>$search_query])->links() }}
     @else
         {{$questions->links()}}
     @endif
