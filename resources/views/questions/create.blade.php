@@ -17,6 +17,9 @@
 @endif
 <form method="post" action="{{route('questions.store')}}">
   {{csrf_field()}}
+  <textarea name="url" placeholder ="動画のurlを書き込んでください" style='width:100%;'>
+      {{old('url')}}
+    </textarea>
   <textarea name="description" placeholder ="質問の内容を書き込んでください" style='width:100%;min-height:300px;'>
     {{old('body')}}
   </textarea>

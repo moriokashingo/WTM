@@ -2,6 +2,7 @@
 @section('title',"WTM~ What's The Music?~")
 
 @section('content')
+<h1>Question's</h1>
   @if(isset($search_query )|| isset($tag_search_query ))
     <h5 class='card-title'>{{$seacrh_result}}</h5>
   @endif
@@ -22,9 +23,14 @@
       <div class="card-body">
         <h5 class="card-title">
           <a href="{{route('questions.show',$question->id)}}">
-          {{$question->description}}
+          {{ $question->description }}
           </a>
         </h5>
+        @isset($question->url)
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="{{ $question->url  }}" allowfullscreen></iframe>
+          </div>
+        @endisset
         <h5 class="card-title">
           投稿者:
           <a href="{{route('users.show',[$question->user_id])}}">

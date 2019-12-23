@@ -19,6 +19,7 @@
   {{csrf_field()}}
   {{ method_field('patch') }}
   <p>
+    <textarea name="url" placeholder ="動画のurlを書き込んでください" style='width:100%;'>{{old('url', $question->url)}}</textarea>
     <textarea name="description" placeholder ="質問内容を入力してください" style='width:100%;min-height:300px;' >{{old('description', $question->description)}}</textarea>
     @if($errors->has('description'))
     <span class="error">{{$errors->first('description')}}</span>

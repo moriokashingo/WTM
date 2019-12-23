@@ -93,6 +93,25 @@ class QuestionController extends Controller
         $question->description = $request->description;
         $question->resolution = $request->resolution;
         $question->user_id = Auth::user()->id;
+
+        // urlをyotube用に
+        $url = $request->url;
+
+
+        if(strpos($url,'watch') === false){
+            //'$url'のなかにwatchが含まれていない場合
+            $keys = parse_url($url); //パース処理
+            $path = explode("/", $keys['path']); //分割処理
+            $last_url = end($path); //最後の要素を取得
+            $youtube ="https://www.youtube.com/embed/".$last_url;
+        }else{
+            //'$url'のなかにwatchが含まれている場合
+            preg_match('/v=(\w+)/', $url, $match);
+            $youtube ="https://www.youtube.com/embed/".$match[1];
+        }
+        $question->url = $youtube;
+
+        // タグの処理
         preg_match_all('/#([a-zA-z0-9０-９ぁ-んァ-ヶ亜-熙]+)/u', $request->tags, $match);
         $tags = [];
         foreach ($match[1] as $tag) {
@@ -119,7 +138,7 @@ class QuestionController extends Controller
     {
         //
         $question = Question::findOrFail($id);
-        $comments = Comment::latest()->paginate(5);
+        $comments = Comment::where("question_id",$id)->paginate(5);
         return view('questions.show')->with(['question'=>$question ,'comments'=>$comments]);
     }
 

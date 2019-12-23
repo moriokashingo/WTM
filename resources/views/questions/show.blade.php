@@ -13,6 +13,12 @@
       {{$question->description}}
       </a>
     </h5>
+    @isset($question->url)
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="{{ $question->url  }}" allowfullscreen></iframe>
+      </div>
+    @endisset
+    <h5 class="card-title">
     <h5 class="card-title">
       投稿者:
       <a href="{{route('users.show',[$question->user_id])}}">
