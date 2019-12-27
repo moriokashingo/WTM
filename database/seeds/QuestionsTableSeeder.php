@@ -13,7 +13,6 @@ class QuestionsTableSeeder extends Seeder
     public function run()
     {
         //
-        $faker = Faker\Factory::create('ja_JP');
 
         DB::table('questions')->insert([
             ['description' => '一曲めをおしえてください',
