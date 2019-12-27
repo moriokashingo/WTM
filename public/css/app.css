@@ -11124,7 +11124,11 @@ button.bg-dark:focus {
 .font-weight-normal {
   font-weight: 400 !important;
 }
-
+.thumbnail{
+  width:200px;
+  height:200px;
+  border-radius: 50%;
+}
 .font-weight-bold {
   font-weight: 700 !important;
 }

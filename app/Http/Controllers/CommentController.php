@@ -37,10 +37,37 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Question $question){
+
         $comment= new Comment;
-        $input = $request->only($comment ->getFillable());
-        $comment  =$comment ->create($input);
-        return redirect()->action('QuestionController@show',$question);
+        $comment->body = $request->body;
+        $comment->question_id = $request->question_id;
+        $comment->user_id = Auth::user()->id;
+
+        // urlをyotube用に
+        $url = $request->url;
+
+        if(strpos($url,'soundcloud.com') !== false){
+            $s_url=mb_strstr($url, 'tracks/');
+            $s2_url=mb_strstr($s_url, '&color',true);
+            $s3_url=substr($s2_url, 7);
+            $comment->url = $s3_url;
+        }elseif(strpos($url,'watch') === false){
+            //'$url'のなかにwatchが含まれていない場合
+            $keys = parse_url($url); //パース処理
+            $path = explode("/", $keys['path']); //分割処理
+            $last_url = end($path); //最後の要素を取得
+            $youtube ="https://www.youtube.com/embed/".$last_url;
+            $comment->url = $youtube;
+        }else{
+            //'$url'のなかにwatchが含まれている場合
+            preg_match('/v=(\w+)/', $url, $match);
+            $youtube ="https://www.youtube.com/embed/".$match[1];
+            $comment->url = $youtube;
+        }
+
+
+        $comment->save();
+        return redirect()->action('QuestionController@show',['question'=>$comment->question_id]);
 
     }
 

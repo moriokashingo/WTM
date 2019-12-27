@@ -14,9 +14,13 @@
       </a>
     </h5>
     @isset($question->url)
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src="{{ $question->url  }}" allowfullscreen></iframe>
-      </div>
+      @if(strpos($question->url,'youtube') === false)
+        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ $question->url }}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+      @else
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="{{ $question->url  }}" allowfullscreen></iframe>
+        </div>
+      @endif
     @endisset
     <h5 class="card-title">
     <h5 class="card-title">
@@ -58,6 +62,15 @@
   @forelse($comments as $comment)
     <div class="card">
       <div class="card-body">
+        @isset($comment->url)
+          @if(strpos($comment->url,'youtube') === false)
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ $comment->url }}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+          @else
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="{{ $comment->url  }}" allowfullscreen></iframe>
+            </div>
+          @endif
+        @endisset
         <h5 class="card-title">
           {{$comment->body}}
         </h5>
@@ -91,6 +104,7 @@
   {{csrf_field()}}
   <p>
     <input type="text" name="body" placeholder="enter comment" value="{{old('body')}}" style='width:100%; height:50px;'>
+    <input type="text" name="url" placeholder="enter url" value="{{old('body')}}" style='width:100%; height:50px;'>
     <input type='hidden' name='user_id' value={{Auth::id()}}>
     <input type='hidden' name='question_id' value="{{$question->id}}">
 

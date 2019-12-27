@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     //
-    protected $fillable=['body',"user_id","question_id"];
+    protected $fillable=['body',"user_id","question_id","url"];
 
     public static $rules =array(
         'body'        =>  'required',

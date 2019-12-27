@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use  Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
 use App\Question;
 use App\Comment;
@@ -20,19 +21,33 @@ class TagController extends Controller
     {
         //
         }
-    public function search(Request $request)
+    public function search(Request $request )
     {
         //
 
-        $tags = Tag::with('questions')->where('name','like',"%$request->search%")->paginate(2);
+        $q = \Request::query();
+        $id = $request->query('page');
+
+        $tags = Tag::with('questions')->where('name','like',"%$request->search%")->get();
+        // dd($tags);
         $a_questions=[];
         foreach ($tags as $tag){
             foreach ($tag->questions as $question){
                 array_push($a_questions,$question);
             }
         }
-
-        $questions = new Paginator($a_questions, 2 );
+        $total= count($a_questions);
+        $perPage = 2;
+        //ページ番号
+        $page = max(0,Paginator::resolveCurrentPage() - 1);
+        $sliced = array_slice($a_questions, $page * $perPage, $perPage);
+        $questions = new LengthAwarePaginator(
+            $sliced,
+            $total,
+            2,
+            $id );
+            // dd($questions);
+        $form =$request->all();
         $seacrh_result= $request->search."の検索結果".count($a_questions)."件";
         return view('questions.index',[
             'seacrh_result'=>$seacrh_result,

@@ -13,23 +13,35 @@ class CommentsTableSeeder extends Seeder
     {
         //
         DB::table('comments')->insert([
-            ['body' => 'これはあの曲ですよ',
-            'question_id'=>'1',
-            'user_id'=>'1',
-            'created_at'=>'2019-12-14 14:23:24',
-            'updated_at'=>'2019-12-14 14:23:24'
-            ],
-            ['body' => 'それはあの曲ですよ',
+            ['body' => 'remixばーじょんですがどうぞ',
+            'url'=>'295416928',
             'question_id'=>'1',
             'user_id'=>'1',
             'created_at'=>'2019-12-14 14:23:24',
             'updated_at'=>'2019-12-14 14:23:24'
         ],
-            ['body' => 'あれはあの曲ですよ',
-            'question_id'=>'1',
+            ['body' => 'これはあの曲ですよ',
+            'question_id'=>'2',
+            'user_id'=>'1',
+            'url'=>'https://www.youtube.com/embed/i9bW0TuhY6A',
+            'created_at'=>'2019-12-14 14:23:24',
+            'updated_at'=>'2019-12-14 14:23:24'
+            ],
+            ['body' => '1曲目です',
+            'url'=>'https://www.youtube.com/embed/i9bW0TuhY6A',
+            'question_id'=>'3',
             'user_id'=>'1',
             'created_at'=>'2019-12-14 14:23:24',
-            'updated_at'=>'2019-12-14 14:23:24']
+            'updated_at'=>'2019-12-14 14:23:24'
+        ],
+            ['body' => '二曲目はこれです',
+            'url'=>'https://www.youtube.com/embed/Uc2xESpxO2s',
+            'question_id'=>'4',
+            'user_id'=>'1',
+            'created_at'=>'2019-12-14 14:23:24',
+            'updated_at'=>'2019-12-14 14:23:24'
+        ],
+
         ]);
     }
 }

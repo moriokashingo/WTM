@@ -13,15 +13,17 @@ class CreateQuestionsTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('description');
             $table->boolean('resolution');
+            $table->timestamps();
 
             $table->bigInteger('user_id')->unsigned()->index();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
+
         });
     }
 

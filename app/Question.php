@@ -15,6 +15,7 @@ class Question extends Model
         'resolution'  =>  'boolean',
     );
 
+    public $timestamps = true;
 
 
     public function user(){

@@ -3,6 +3,7 @@
 
 @section('content')
 <h1>Question's</h1>
+
   @if(isset($search_query )|| isset($tag_search_query ))
     <h5 class='card-title'>{{$seacrh_result}}</h5>
   @endif
@@ -27,9 +28,13 @@
           </a>
         </h5>
         @isset($question->url)
-          <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="{{ $question->url  }}" allowfullscreen></iframe>
-          </div>
+          @if(strpos($question->url,'youtube') === false)
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ $question->url }}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+          @else
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="{{ $question->url  }}" allowfullscreen></iframe>
+            </div>
+          @endif
         @endisset
         <h5 class="card-title">
           投稿者:
@@ -66,8 +71,10 @@
     @endforeach
     @if(isset($tag_search_query))
         {{$questions->appends(['tag_search_query'=> $tag_search_query])->links()}}
+        たぐサーチクエリ
     @elseif(isset($search_query))
         {{ $questions->appends(['search_query'=>$search_query])->links() }}
+        サーチクエリ
     @else
         {{$questions->links()}}
     @endif
